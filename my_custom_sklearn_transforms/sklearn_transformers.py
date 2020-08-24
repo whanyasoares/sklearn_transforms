@@ -15,6 +15,21 @@ class DropColumns(BaseEstimator, TransformerMixin):
         # Retornamos um novo dataframe sem as colunas indesejadas
         return data.drop(labels=self.columns, axis='columns')
 
+class DuplicateColumn(BaseEstimator, TransformerMixin):
+    def __init__(self, column, new_column):
+        self.column = column
+        self.new_column = new_column
+
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        # Primeiro realizamos a cópia do dataframe 'X' de entrada
+        data = X.copy()
+        data[self.new_column] = data[self.column]
+        # Retornamos um novo dataframe sem as colunas indesejadas
+        return data
+    
 class ReplaceImputer(BaseEstimator, TransformerMixin):
     def __init__(self, column_replace, column_compare, value_compare, replacer):
         self.column_replace = column_replace
